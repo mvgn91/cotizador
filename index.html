@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Cotizador SSA">
+    <meta name="format-detection" content="telephone=no">
+    
+    <title>Cotizador de Señalética</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind CSS configuration is kept inline as it's part of the HTML rendering process
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Optimized font system for Apple
+                    fontFamily: {
+                        'system': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        'display': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'system-ui', 'sans-serif'],
+                        'body': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'system-ui', 'sans-serif'],
+                        'mono': ['SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'monospace'],
+                    },
+                    // Apple optimized color palette (darker tones)
+                    colors: {
+                        // Main system colors
+                        'primary': '#1A3B9F', // Darker iOS system blue
+                        'primary-light': '#2A5BBF', // Lighter tone but still dark
+                        'primary-dark': '#0E2A84', // Darker tone
+                        
+                        // Apple surface colors
+                        'surface': '#ffffff',
+                        'surface-secondary': '#f8fafc',
+                        'surface-tertiary': '#f1f5f9',
+                        
+                        // Apple text colors
+                        'text-primary': '#1f2937',
+                        'text-secondary': '#6b7280',
+                        'text-tertiary': '#9ca3af',
+                        
+                        // State colors
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'error': '#ef4444',
+                        
+                        // Border colors
+                        'border': '#e5e7eb',
+                        'border-light': '#f3f4f6',
+                        'border-focus': '#3b82f6',
+                    },
+                    // Apple rounded corners system
+                    borderRadius: {
+                        'xs': '4px',
+                        'sm': '6px',
+                        'md': '8px',
+                        'lg': '12px',
+                        'xl': '16px',
+                        '2xl': '20px',
+                    },
+                    // Apple optimized shadows
+                    boxShadow: {
+                        'apple-sm': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                        'apple-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'apple-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'apple-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                    },
+                    // Touch-optimized spacing
+                    spacing: {
+                        '18': '4.5rem', // 72px - Minimum touch target size
+                        '22': '5.5rem', // 88px
+                    },
+                    // Smooth Apple animations
+                    transitionTimingFunction: {
+                        'apple': 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                        'apple-spring': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                    },
+                    transitionDuration: {
+                        '250': '250ms',
+                        '350': '350ms',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="safe-area-inset">
+    <div class="min-h-screen py-4 px-4 sm:py-8 sm:px-6 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <div class="w-full max-h-32 mb-6 overflow-hidden rounded-lg shadow-md">
+                <!-- Ruta actualizada para el banner del cliente -->
+                <img src="/assets/banner.png" 
+                     alt="Banner de tu empresa" 
+                     class="w-full h-auto object-cover mx-auto">
+            </div>
+
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 fade-in-up">
+                <div class="flex items-center text-left mb-4 sm:mb-0">
+                    <div class="w-1 h-16 bg-primary rounded-full mr-4"></div>
+                    <div>
+                        <h1 class="text-3xl sm:text-4xl font-bold text-primary mb-1 tracking-tight font-display">
+                            COTIZADOR DE SEÑALÉTICA
+                        </h1>
+                        <div id="connectionStatus" class="online-status-indicator">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8.59 10 17z"/>
+                            </svg>
+                            <span>v5.9 Online</span>
+                        </div>
+                        <p class="text-base text-text-secondary font-body mt-1">
+                            <span class="font-semibold text-primary">Corporativo Innovar</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center h-28 w-full sm:w-64">
+                    <!-- Ruta actualizada para el logo SSA -->
+                    <img src="/assets/logo ssa.png" 
+                         alt="Logo SSA" 
+                         class="max-h-full max-w-full object-contain rounded-lg shadow-apple-md">
+                </div>
+            </header>
+
+            <section class="material-card p-6 mb-6 fade-in-up" style="animation-delay: 0.1s">
+                <div class="flex items-center mb-6">
+                    <div class="w-1 h-8 bg-primary rounded-full mr-4"></div>
+                    <h2 class="text-xl font-semibold text-text-primary font-display">
+                        Datos del Cliente
+                    </h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="clientName" class="label-text">Cliente</label>
+                        <input type="text" id="clientName" class="input-field w-full focus-visible" 
+                               placeholder="Nombre del Cliente" autocomplete="organization">
+                    </div>
+                    <div>
+                        <label for="purchaseOrder" class="label-text">Orden de Compra (OC)</label>
+                        <input type="text" id="purchaseOrder" class="input-field w-full focus-visible" 
+                               placeholder="No. de Orden de Compra">
+                    </div>
+                    <div>
+                        <label for="issueDate" class="label-text">Fecha de Emisión</label>
+                        <input type="date" id="issueDate" class="input-field w-full focus-visible">
+                    </div>
+                    <div>
+                        <label for="deliveryDate" class="label-text">Fecha Compromiso de Entrega</label>
+                        <input type="date" id="deliveryDate" class="input-field w-full focus-visible">
+                    </div>
+                    <div>
+                        <label for="requestedBy" class="label-text">Proyecto Solicitado Por</label>
+                        <input type="text" id="requestedBy" class="input-field w-full focus-visible" 
+                               placeholder="Nombre del solicitante" autocomplete="name">
+                    </div>
+                    <div>
+                        <label for="clientPosition" class="label-text">Cargo o Área</label>
+                        <input type="text" id="clientPosition" class="input-field w-full focus-visible" 
+                               placeholder="Cargo o Área del solicitante" autocomplete="organization-title">
+                    </div>
+                    <div>
+                        <label for="cultivo" class="label-text">Cultivo</label>
+                        <input type="text" id="cultivo" class="input-field w-full focus-visible" 
+                               placeholder="Tipo de Cultivo (ej. Aguacate, Limón)">
+                    </div>
+                </div>
+            </section>
+
+            <section class="material-card p-6 mb-6 fade-in-up" style="animation-delay: 0.2s">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-1 h-8 bg-primary rounded-full mr-4"></div>
+                        <h2 class="text-xl font-semibold text-text-primary font-display">
+                            Productos / Servicios Cotizados
+                        </h2>
+                    </div>
+                    <button id="addProductBtn" class="btn-primary flex items-center justify-center gap-2 px-4 py-2 text-sm md:text-base focus-visible">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Agregar Producto
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto responsive-table mb-6">
+                    <table id="productsTable" class="min-w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="px-4 py-4 text-left">Cant.</th>
+                                <th class="px-4 py-4 text-left">Producto</th>
+                                <th class="px-4 py-4 text-left">Medida</th>
+                                <th class="px-4 py-4 text-left">Material</th>
+                                <th class="px-4 py-4 text-left">Tipo Señalamiento</th>
+                                <th class="px-4 py-4 text-left">C/U</th>
+                                <th class="px-4 py-4 text-left">Importe</th>
+                                <th class="px-4 py-4 text-left">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsBody" class="bg-white">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div id="productModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="text-xl font-semibold text-text-primary font-display" id="productModalTitle">Agregar Producto</h2>
+                        <button class="close-button" id="closeProductModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="modalQuantity" class="label-text">Cantidad</label>
+                                <input type="number" id="modalQuantity" class="input-field w-full focus-visible" value="1" min="1">
+                            </div>
+                            <div>
+                                <label for="modalUnitPrice" class="label-text">Costo Unitario</label>
+                                <input type="number" id="modalUnitPrice" class="input-field w-full focus-visible" value="0" min="0" step="0.01">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="modalProductType" class="label-text">Producto</label>
+                                <select id="modalProductType" class="input-field w-full focus-visible">
+                                </select>
+                                <input type="text" id="modalOtherProductType" class="input-field w-full focus-visible mt-2 hidden" placeholder="Especificar producto">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="modalMeasure" class="label-text">Medida</label>
+                                <input type="text" id="modalMeasure" class="input-field w-full focus-visible" placeholder="Ej: 20x30 cm">
+                            </div>
+                            <div>
+                                <label for="modalMaterial" class="label-text">Material</label>
+                                <select id="modalMaterial" class="input-field w-full focus-visible">
+                                </select>
+                            </div>
+                            <div>
+                                <label for="modalSignType" class="label-text">Tipo de Señalamiento</label>
+                                <select id="modalSignType" class="input-field w-full focus-visible">
+                                </select>
+                                <input type="text" id="modalOtherSignType" class="input-field w-full focus-visible mt-2 hidden" placeholder="Especificar tipo">
+                            </div>
+                            <div id="visualReferencePreviewContainer" class="md:col-span-2 mt-4 text-center hidden">
+                                <img id="visualReferencePreview" src="" alt="Referencia Visual del Producto" class="max-w-full h-auto mx-auto rounded-lg shadow-md max-h-48 object-contain border border-gray-200 p-2">
+                                <p class="text-sm text-text-secondary mt-2" id="visualReferencePlaceholderText">Imagen de referencia no disponible para este producto.</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-3 mt-6">
+                            <button id="cancelProductModal" class="btn-secondary px-6 py-3 focus-visible">Cancelar</button>
+                            <button id="saveProductModal" class="btn-primary px-6 py-3 focus-visible">Guardar Producto</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="material-card p-6 mb-6 fade-in-up" style="animation-delay: 0.3s">
+                <div class="flex items-center mb-6">
+                    <div class="w-1 h-8 bg-primary rounded-full mr-4"></div>
+                    <h2 class="text-xl font-semibold text-text-primary font-display">
+                        Configuraciones Adicionales
+                    </h2>
+                </div>
+                
+                <div class="bg-gradient-to-r from-primary-light to-primary p-6 rounded-xl text-white">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label for="paymentType" class="label-text-inverted">Forma de Pago</label>
+                            <select id="paymentType" class="input-field w-full focus-visible">
+                                <option value="anticipo_liquidacion">Anticipo + Liquidación</option>
+                                <option value="pago_completo">Pago Completo al Inicio</option>
+                                <option value="contra_entrega">Contra Entrega</option>
+                                <option value="credito">Crédito</option>
+                                <option value="personalizado">Personalizado</option>
+                            </select>
+                        </div>
+                        
+                        <div id="anticipoGroup" class="md:col-span-2">
+                            <h3 class="text-lg font-semibold mb-4 font-display">Configuración de Anticipo</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label for="anticipoPercentage" class="block text-sm font-medium mb-2">
+                                        Porcentaje de Anticipo (%)
+                                    </label>
+                                    <input type="number" id="anticipoPercentage" 
+                                           class="input-field w-full focus-visible" 
+                                           value="50" min="0" max="100" step="1">
+                                </div>
+                                <div>
+                                    <label for="anticipoAmount" class="block text-sm font-medium mb-2">
+                                        Monto de Anticipo
+                                    </label>
+                                    <input type="number" id="anticipoAmount" 
+                                           class="input-field w-full" 
+                                           value="0" min="0" step="0.01" readonly>
+                                </div>
+                                <div>
+                                    <label for="liquidacionAmount" class="block text-sm font-medium mb-2">
+                                        Liquidación al Término
+                                    </label>
+                                    <input type="number" id="liquidacionAmount" 
+                                           class="input-field w-full" 
+                                           value="0" min="0" step="0.01" readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 p-4 bg-white bg-opacity-20 rounded-lg backdrop-filter backdrop-blur-sm">
+                                <p id="paymentSummary" class="text-sm font-medium">
+                                    50% ANTICIPO / 50% CONTRA ENTREGA
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div id="customPaymentGroup" class="hidden md:col-span-2">
+                            <label for="customPaymentText" class="label-text-inverted">Descripción Personalizada de Pago</label>
+                            <textarea id="customPaymentText" class="input-field w-full focus-visible" 
+                                      rows="3" placeholder="Describe las condiciones de pago personalizadas..."></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="deliveryType" class="label-text-inverted">Tipo de Entrega</label>
+                            <select id="deliveryType" class="input-field w-full focus-visible">
+                                <option value="sin_instalacion">SIN INSTALACIÓN</option>
+                                <option value="con_instalacion">CON INSTALACIÓN</option>
+                            </select>
+                        </div>
+                        
+                        <div id="installationCostGroup" class="hidden">
+                            <label for="installationCost" class="label-text-inverted">Costo de Instalación</label>
+                            <input type="number" id="installationCost" class="input-field w-full focus-visible" 
+                                   value="0" min="0" step="0.01">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="deliveryServiceToggle" class="label-text-inverted flex items-center cursor-pointer">
+                                <span class="mr-3">¿Requiere Servicio a Domicilio?</span>
+                                <label class="apple-switch">
+                                    <input type="checkbox" id="deliveryServiceToggle">
+                                    <span class="apple-slider"></span>
+                                </label>
+                            </label>
+                        </div>
+
+                        <div id="deliveryServiceDetailsGroup" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6 md:col-span-2">
+                            <div>
+                                <label for="deliveryAddress" class="label-text-inverted">Dirección de Entrega</label>
+                                <textarea id="deliveryAddress" class="input-field w-full focus-visible" 
+                                          rows="2" placeholder="Calle, número, colonia, ciudad, etc."></textarea>
+                            </div>
+                            <div>
+                                <label for="deliveryCost" class="label-text-inverted">Costo por Domicilio</label>
+                                <input type="number" id="deliveryCost" class="input-field w-full focus-visible" 
+                                       value="0" min="0" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="material-card p-6 mb-6 fade-in-up" style="animation-delay: 0.4s">
+                <div class="flex items-center mb-6">
+                    <div class="w-1 h-8 bg-primary rounded-full mr-4"></div>
+                    <h2 class="text-xl font-semibold text-text-primary font-display">
+                        Observaciones
+                    </h2>
+                </div>
+                <div>
+                    <label for="observationsText" class="label-text">Notas o Consideraciones Adicionales</label>
+                    <textarea id="observationsText" class="input-field w-full focus-visible" 
+                              rows="5" placeholder="Agrega cualquier observación relevante para la cotización..."></textarea>
+                </div>
+            </section>
+
+            <section class="material-card p-6 mb-6 fade-in-up" style="animation-delay: 0.5s">
+                <div class="flex items-center mb-6">
+                    <div class="w-1 h-8 bg-primary rounded-full mr-4"></div>
+                    <h2 class="text-xl font-semibold text-text-primary font-display">
+                        Cláusulas
+                    </h2>
+                </div>
+                <div>
+                    <label for="clausesText" class="label-text">Cláusulas de Contratación / Términos y Condiciones</label>
+                    <textarea id="clausesText" class="input-field w-full focus-visible" 
+                              rows="8" placeholder="Aquí puedes añadir los términos y condiciones usuales de tus cotizaciones.">1. Validez de la Oferta: Esta cotización es válida por 20 días naturales a partir de la fecha de emisión.
+2. Cambios y Adicionales: Cualquier cambio o adicional al proyecto original será cotizado por separado y requerirá aprobación por escrito.
+3. Propiedad Intelectual: Los diseños y propuestas son propiedad de INNOVACION Y VANGUARDIA EDUCATIVA hasta la liquidación total del proyecto.</textarea>
+                </div>
+            </section>
+
+            <section class="material-card p-6 mb-6 fade-in-up" style="animation-delay: 0.6s">
+                <div class="flex items-center mb-6">
+                    <div class="w-1 h-8 bg-primary rounded-full mr-4"></div>
+                    <h2 class="text-xl font-semibold text-text-primary font-display">
+                        Totales
+                    </h2>
+                </div>
+                
+                <div class="bg-gradient-to-r from-primary-light to-primary p-8 rounded-2xl text-white">
+                    <p class="text-lg font-bold mb-4 font-display">Resumen de la Cotización</p>
+                    
+                    <div id="productsSummary" class="mb-4 text-white text-opacity-90 text-base space-y-1">
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-medium">Subtotal:</span>
+                            <span id="subtotalDisplay" class="text-lg font-bold">$0.00</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center flex-wrap gap-2">
+                            <div class="flex items-center gap-3">
+                                <span class="text-lg font-medium">IVA</span>
+                                <span class="text-sm opacity-75">(</span>
+                                <input type="number" id="ivaPercentage" value="16" min="0" max="100" 
+                                       class="w-12 text-center bg-white bg-opacity-20 border border-white border-opacity-30 rounded text-sm font-medium focus:outline-none focus:bg-opacity-30 text-white placeholder-white placeholder-opacity-75">
+                                <span class="text-sm opacity-75">%):</span>
+                                <label class="apple-switch">
+                                    <input type="checkbox" id="ivaToggleCheckbox" checked>
+                                    <span class="apple-slider"></span>
+                                </label>
+                            </div>
+                            <span id="ivaDisplay" class="text-lg font-bold">$0.00</span>
+                        </div>
+                        
+                        <div class="border-t border-white border-opacity-30 pt-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold font-display">Total:</span>
+                                <span id="totalDisplay" class="text-2xl font-bold">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="fade-in-up" style="animation-delay: 0.7s">
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+                    <button id="generatePdfBtn" class="btn-primary flex-1 focus-visible">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14,2 14,8 20,8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10,9 9,9 8,9"></polyline>
+                            </svg>
+                            Cotización
+                        </span>
+                    </button>
+                    
+                    <button id="generateProductionOrderBtn" class="btn-primary flex-1 focus-visible">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14,2 14,8 20,8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                            Orden de Producción
+                        </span>
+                    </button>
+
+                    <button id="saveQuoteBtn" class="btn-primary flex-1 focus-visible">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17,21 17,13 7,13 7,21"></polyline>
+                                <polyline points="7,3 7,8 15,8"></polyline>
+                            </svg>
+                            Guardar
+                        </span>
+                    </button>
+                    
+                    <button id="loadQuoteBtn" class="btn-primary flex-1 focus-visible">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                            </svg>
+                            Cargar
+                        </span>
+                    </button>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-4">
+                     <button id="logoutBtn" class="btn-secondary flex-1 focus-visible">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="17 16 22 12 17 8"></polyline>
+                                <line x1="22" y1="12" x2="10" y2="12"></line>
+                            </svg>
+                            Cerrar Sesión
+                        </span>
+                    </button>
+                </div>
+            </section>
+
+            <div id="messageBox" class="hidden fixed bottom-4 right-4 p-4 rounded-lg shadow-apple-lg z-50 max-w-sm">
+                <p id="messageText" class="text-sm font-medium"></p>
+            </div>
+
+            <div id="userIdDisplaySection" class="hidden">
+                <span id="currentUserId">loading...</span>
+            </div>
+
+            <div class="text-center mt-8 mb-4 text-xs text-gray-500 opacity-70 flex items-center justify-center gap-2">
+                <!-- Ruta actualizada para el logo MVGN -->
+                <img src="/assets/mvgn icon.png" alt="MVGN Logo" class="h-5 w-5 rounded-full">
+                <span>Powered by MVGN Labs 2025</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cotizaciones Anteriores (sin cambios en UI) -->
+    <div id="previousQuotesModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-xl font-semibold text-text-primary font-display">Gestión de Cotizaciones</h2>
+                <button class="close-button" id="closeQuotesModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalQuotesCount">0</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="recentQuotesCount">0</span>
+                        <span class="stat-label">Recientes</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalValueSum">$0</td>
+                        <span class="stat-label">Valor Total</span>
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <div class="relative">
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" id="searchQuotes" class="search-input" placeholder="Buscar por cliente, fecha o monto...">
+                    </div>
+                </div>
+
+                <div class="filter-container">
+                    <button class="filter-button active" data-filter="all">Todas</button>
+                    <button class="filter-button" data-filter="recent">Recientes</button>
+                    <button class="filter-button" data-filter="high-value">Alto Valor</button>
+                    <button class="filter-button" data-filter="this-month">Este Mes</button>
+                </div>
+
+                <div id="quoteListContent">
+                    <div class="flex items-center justify-center py-8">
+                        <div class="loading-spinner"></div>
+                        <span class="ml-2 text-text-secondary">Cargando cotizaciones...</span>
+                    </div>
+                </div>
+                
+                <div id="noQuotesMessage" class="hidden text-center py-8 text-text-secondary">
+                    <svg class="mx-auto mb-4 w-16 h-16 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p class="text-lg font-medium">No hay cotizaciones guardadas</p>
+                    <p class="text-sm">Crea tu primera cotización para comenzar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nuevo Modal de Login/Registro -->
+    <div id="authModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-xl font-semibold text-text-primary font-display" id="authModalTitle">Iniciar Sesión</h2>
+                <!-- No hay botón de cerrar en el modal de autenticación para forzar el login -->
+            </div>
+            <div class="modal-body">
+                <div id="authMessage" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+                    <p id="authMessageText"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="authEmail" class="label-text">Correo Electrónico</label>
+                    <input type="email" id="authEmail" class="input-field w-full focus-visible" placeholder="tu@ejemplo.com" autocomplete="email">
+                </div>
+                <div class="mb-6">
+                    <label for="authPassword" class="label-text">Contraseña</label>
+                    <input type="password" id="authPassword" class="input-field w-full focus-visible" placeholder="Contraseña" autocomplete="current-password">
+                </div>
+                <div class="flex flex-col gap-4">
+                    <button id="loginBtn" class="btn-primary px-6 py-3 focus-visible">Iniciar Sesión</button>
+                    <button id="registerBtn" class="btn-secondary px-6 py-3 focus-visible">Registrarse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
